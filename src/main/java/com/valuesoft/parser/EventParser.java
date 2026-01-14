@@ -1,32 +1,36 @@
 package com.valuesoft.parser;
 
-
-
 import com.valuesoft.model.Event;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 public class EventParser {
 
-    public List<Event> parse(String html) {
+    public List<Event> parseHtml(Document doc) {
+
         List<Event> events = new ArrayList<>();
 
-        Document doc = Jsoup.parse(html);
+        // Each event card
+        Elements cards = doc.select(".event-card");
 
-        // Update these selectors according to the real site structure
-        for (Element card : doc.select(".event-card")) {
-            String title = card.select(".title").text();      // Event name / participants
-            String league = card.select(".league").text();    // League / sport
-            String startTime = card.select(".start-time").text(); // Start time
-            List<Element> oddsElements = card.select(".odd");
-            String odd1 = oddsElements.size() > 0 ? oddsElements.get(0).text() : "";
-            String odd2 = oddsElements.size() > 1 ? oddsElements.get(1).text() : "";
+        for (Element card : cards) {
 
-            events.add(new Event(title, league, startTime, odd1, odd2));
+            String teams = card.select(".event-title").text();
+            String league = card.select(".event-league").text();
+            String startTime = card.select(".event-time").text();
+
+            String odds = "";
+            Elements oddsElements = card.select(".market-odd");
+            if (!oddsElements.isEmpty()) {
+                odds = oddsElements.get(0).text();
+            }
+
+            events.add(new Event(teams, league, startTime, odds));
         }
 
         return events;

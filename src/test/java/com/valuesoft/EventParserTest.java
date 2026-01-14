@@ -1,42 +1,38 @@
 package com.valuesoft;
 
-
-
 import com.valuesoft.model.Event;
 import com.valuesoft.parser.EventParser;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EventParserTest {
+class EventParserTest {
 
     @Test
-    void shouldParseEventsFromHtml() {
+    void shouldParseEventsFromHtml() throws Exception {
 
-        String html = """
-            <html>
-                <body>
-                    <div class="event-card">
-                        <div class="title">Team A vs Team B</div>
-                        <div class="league">Premier League</div>
-                        <div class="start-time">18:00</div>
-                        <div class="odd">1.85</div>
-                        <div class="odd">2.10</div>
-                    </div>
-                </body>
-            </html>
-        """;
+        // Load sample HTML from resources
+        InputStream is = getClass().getClassLoader().getResourceAsStream("eventTest.html");
+        assertNotNull(is, "eventTest.html not found in test resources");
+
+        String html = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        Document doc = Jsoup.parse(html);
 
         EventParser parser = new EventParser();
-        List<Event> events = parser.parse(html);
+        List<Event> events = parser.parseHtml(doc);
 
-        assertEquals(1, events.size());
+        assertEquals(2, events.size());
 
-        Event event = events.get(0);
-        assertEquals("Team A vs Team B", event.getTitle());
-        assertEquals("Premier League", event.getLeague());
-        assertEquals("18:00", event.getStartTime());
+        Event first = events.get(0);
+        assertTrue(first.pretty().contains("Team A vs Team B"));
+        assertTrue(first.pretty().contains("NBA"));
+        assertTrue(first.pretty().contains("2026-01-14"));
+        assertTrue(first.pretty().contains("1.85"));
     }
 }
