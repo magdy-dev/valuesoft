@@ -5,6 +5,7 @@ import com.valuesoft.model.Event;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.valuesoft.model.Odd;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -12,12 +13,10 @@ import org.jsoup.select.Elements;
 public class EventParser {
 
     public List<Event> parseHtml(Document doc) {
-
         List<Event> events = new ArrayList<>();
 
         // Each event card
         Elements cards = doc.select(".event-card");
-
         for (Element card : cards) {
 
             String teams = card.select(".event-title").text();
@@ -30,9 +29,19 @@ public class EventParser {
                 odds = oddsElements.get(0).text();
             }
 
-            events.add(new Event(teams, league, startTime, odds));
-        }
+            List<Odd> oddList = new ArrayList<>();
+            if (!odds.isEmpty()) {
+                String[] parts = odds.split(" ");
+                for (String part : parts) {
+                    String[] sideAndPrice = part.split("=");
+                    if (sideAndPrice.length == 2) {
+                        oddList.add(new Odd(sideAndPrice[0].trim(), Double.parseDouble(sideAndPrice[1].trim())));
+                    }
+                }
+            }
 
+            events.add(new Event(teams, league, startTime, oddList));
+        }
         return events;
     }
 }

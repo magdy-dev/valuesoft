@@ -30,9 +30,9 @@ class EventParserTest {
         assertEquals(2, events.size());
 
         Event first = events.get(0);
-        assertTrue(first.pretty().contains("Team A vs Team B"));
-        assertTrue(first.pretty().contains("NBA"));
-        assertTrue(first.pretty().contains("2026-01-14"));
-        assertTrue(first.pretty().contains("1.85"));
+        assertTrue(first.prettyPrint().contains("Team A vs Team B"));
+        assertTrue(first.prettyPrint().contains("NBA"));
+        assertTrue(first.prettyPrint().contains("2026-01-14"));
+        assertTrue(first.prettyPrint().contains("1.85"));
     }
 }

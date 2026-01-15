@@ -1,43 +1,30 @@
 package com.valuesoft.client;
 
-
 import com.valuesoft.model.Event;
-import com.valuesoft.parser.EventParser;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.valuesoft.model.Odd;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public class OvertimeClient {
 
-    private static final String SITE_URL = "https://www.overtimemarkets.xyz/";
+    // MOCK fetchEvents for testing
+    public List<Event> fetchEvents() {
+        List<Event> events = new ArrayList<>();
 
-    private final OkHttpClient client = new OkHttpClient();
-    private final EventParser parser = new EventParser();
+        // Event 1
+        List<Odd> odds1 = new ArrayList<>();
+        odds1.add(new Odd("Home Win", 1.5));
+        odds1.add(new Odd("Draw", 3.2));
+        events.add(new Event("Team A vs Team B", "Premier League", "2026-01-15T18:00", odds1));
 
-    public List<Event> fetchEvents() throws Exception {
+        // Event 2
+        List<Odd> odds2 = new ArrayList<>();
+        odds2.add(new Odd("Home Win", 2.1));
+        odds2.add(new Odd("Away Win", 2.8));
+        events.add(new Event("Team C vs Team D", "La Liga", "2026-01-15T20:00", odds2));
 
-        Request request = new Request.Builder()
-                .url(SITE_URL)
-                .get()
-                .header("User-Agent", "Mozilla/5.0")
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-
-            if (!response.isSuccessful()) {
-                throw new RuntimeException("HTTP error: " + response.code());
-            }
-
-            String html = response.body().string();
-
-            Document doc = Jsoup.parse(html);
-
-            return parser.parseHtml(doc);
-        }
+        return events;
     }
 }
