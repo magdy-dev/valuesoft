@@ -2,6 +2,7 @@ package com.valuesoft.model;
 
 import java.util.List;
 
+
 public class Event {
     private final String name;
     private final String league;
@@ -20,11 +21,9 @@ public class Event {
         sb.append("Event: ").append(name).append("\n");
         sb.append("League: ").append(league).append("\n");
         sb.append("Start: ").append(startTime).append("\n");
-        if (odds != null && !odds.isEmpty()) {
-            sb.append("Odds:\n");
-            for (Odd odd : odds) {
-                sb.append("  ").append(odd.getSide()).append(" = ").append(odd.getPrice()).append("\n");
-            }
+        sb.append("Odds:\n");
+        for (Odd o : odds) {
+            sb.append(" - ").append(o.getSide()).append(": ").append(o.getPrice()).append("\n");
         }
         return sb.toString();
     }

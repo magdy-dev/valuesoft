@@ -1,5 +1,6 @@
 package com.valuesoft.model;
 
+
 public class Odd {
     private final String side;
     private final double price;
