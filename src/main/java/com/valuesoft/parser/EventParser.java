@@ -1,17 +1,24 @@
 package com.valuesoft.parser;
 
 import com.valuesoft.model.Event;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.valuesoft.model.Odd;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Parses event HTML into Event objects.
+ */
 public class EventParser {
 
+    /**
+     * Parses a Jsoup Document and extracts a list of Event objects.
+     * @param doc Jsoup Document containing event HTML
+     * @return List of Event objects
+     */
     public List<Event> parseHtml(Document doc) {
         List<Event> events = new ArrayList<>();
 

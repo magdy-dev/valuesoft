@@ -2,7 +2,9 @@ package com.valuesoft.model;
 
 import java.util.List;
 
-
+/**
+ * Represents a sports event with teams, league, start time, and odds.
+ */
 public class Event {
     private final String name;
     private final String league;
@@ -16,6 +18,10 @@ public class Event {
         this.odds = odds;
     }
 
+    /**
+     * Pretty prints the event details for console output.
+     * @return Human-readable string
+     */
     public String prettyPrint() {
         StringBuilder sb = new StringBuilder();
         sb.append("Event: ").append(name).append("\n");
